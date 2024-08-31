@@ -562,15 +562,21 @@ function showResults() {
 
     selections.forEach(selection => {
         const question = levels[selection.sectionIndex][1][selection.questionIndex];
+        
+        // Find the selected option by matching selection.selectedValue with option.id
         const selectedOption = question.options.find(option => option.id === selection.selectedValue);
+        
+        // Generate the result text using the optionValue of the selected option
         const resultText = `Level ${selection.sectionIndex + 1}, Question ${selection.questionIndex + 1}: ${selectedOption ? selectedOption.optionValue : 'N/A'}`;
+        
+        // Append the result to the results list in the DOM
         $('#results-list').append(`<li>${resultText}</li>`);
         
-        // Collect data to send to the server
+        // Collect data to send to the server, using selectedOption as option.id
         resultsData.push({
             level: selection.sectionIndex + 1,
             question: selection.questionIndex + 1,
-            selectedOption: selectedOption ? selectedOption.optionValue : 'N/A'
+            selectedOption: selectedOption ? selectedOption.id : 'N/A'
         });
     });
 

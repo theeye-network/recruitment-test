@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Eye, CSEA - Recruitment Test</title>
+    <link rel="stylesheet" href="https://intellx.in/static/fonts/stylesheet.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.4/css/dataTables.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/3.0.2/css/responsive.dataTables.min.css">
+    <style type="text/css">
+        * {
+            font-family: 'Aeonik', sans-serif!important;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #1e1e1e;
+            color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-size: 16px;
+        }
+        .container {
+            background-color: #2a2a2a;
+            border-radius: 12px;
+            padding: 20px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        h2 {
+            font-size: 1.25rem;
+            margin-bottom: 15px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: #3a3a3a;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #555;
+            text-align: left;
+        }
+        th {
+            background-color: #444;
+            font-weight: 600;
+        }
+        tr:hover {
+            background-color: #555;
+        }
+        .hidden {
+            display: none;
+        }
+        .btn {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+        }
+        .btn:hover:not(:disabled) {
+            background-color: #0056b3;
+        }
+        @media (max-width: 600px) {
+            body {
+                font-size: 14px;
+            }
+            h1 {
+                font-size: 1.25rem;
+            }
+            h2 {
+                font-size: 1rem;
+            }
+            .btn {
+                padding: 8px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>The Eye, CSEA - Recruitment Test</h1>
+    <hr/>
+    <h3>Instructions</h3>
+    This test consists of 4 section with 5 MCQ Questions per section.<br/>
+    You will be provided 20 seconds per question.<br/>
+    You can only attempt the test once. There is no pass mark, we will shortlist the top performers.
+    <hr/>
+    <div id="test-setup">
+        <br/>
+        <h1>Enter your Details</h1>
+        <div style="display:flex; align-items: center;justify-content: space-evenly;">
+            <label for="roll" style="border: solid 1px;">Roll Number</label>
+            <input type="text" id="roll" style="text-transform:uppercase;" oninput="this.value = this.value.toUpperCase();localStorage.setItem('roll', this.value);" />
+        </div>
+        <hr/>
+        <h1>Click to Enter Full-Screen Mode</h1>
+        <button id="enter-fullscreen" style="padding: 10px 20px; font-size: 20px;" onclick="startTest()">Start Test</button>
+    </div>
+
+    <div id="level-container"></div>
+    <p id="timer">Time left: 20s</p>
+
+    <div id="results" class="hidden">
+            <h2>Your Selections</h2>
+            <ol id="results-list"></ol>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/2.1.4/js/dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/3.0.2/js/dataTables.responsive.min.js"></script>
+
+<script>
+const levels = [
+    [
+        {"cat":"Object Oriented Programming Systems"},
+        [
+            {
+                "qn": "Under which pillar of OOPS do base class and derived class relationships come?",
+                "options": [
+                  { "id": "A", "optionValue": "Polymorphism" },
+                  { "id": "B", "optionValue": "Inheritance" },
+                  { "id": "C", "optionValue": "Encapsulation" },
+                  { "id": "D", "optionValue": "Abstraction" }
+                ]
+            },
+            {
+                "qn": "How do encapsulation and abstraction differ?",
+                "options": [
+                  { "id": "A", "optionValue": "Hiding and binding" },
+                  { "id": "B", "optionValue": "Binding and Hiding" },
+                  { "id": "C", "optionValue": "Both A) and B)" },
+                  { "id": "D", "optionValue": "None" }
+                ]
+            },
+            {
+                "qn": "Which of the following best describes member function overriding?",
+                "options": [
+                  { "id": "A", "optionValue": "Member functions having the same name in derived class only" },
+                  { "id": "B", "optionValue": "Member functions having the same name and different signature inside main function" },
+                  { "id": "C", "optionValue": "Member functions having the same name in base and derived classes" },
+                  { "id": "D", "optionValue": "Member functions having the same name in base class only" }
+                ],
+            },
+            {
+                "qn": "The concept of hiding the internal implementation details of a class and showing only its functionality is known as?",
+                "options": [
+                  { "id": "A", "optionValue": "Encapsulation" },
+                  { "id": "B", "optionValue": "Abstraction" },
+                  { "id": "C", "optionValue": "Polymorphism" },
+                  { "id": "D", "optionValue": "Inheritance" }
+                ],
+            },
+            {
+                "qn": "What is the output of the following Python code?<br/><p style='text-align:left'><br/>class Animal:<br/>&nbsp;def speak(self):<br/>&nbsp;&nbsp;return \"makes a sound\"<br/>class Dog(Animal):<br/>&nbsp;def speak():<br/>&nbsp;&nbsp;return \"barks\"<br/><br/>print(Dog().speak())</p>",
+                "options": [
+                  { "id": "A", "optionValue": "Makes a Sound" },
+                  { "id": "B", "optionValue": "barks" },
+                  { "id": "C", "optionValue": "SyntaxError" },
+                  { "id": "D", "optionValue": "None" }
+                ],
+            }
+
+        ]
+    ],
+    [
+      {"cat": "Data Structures"},
+      [
+        {
+          "qn": "How is the 2nd element in an array accessed based on pointer notation?",
+          "options": [
+            { "id": "A", "optionValue": "*a + 2" },
+            { "id": "B", "optionValue": "*(a + 2)" },
+            { "id": "C", "optionValue": "*(a + 2)" },
+            { "id": "D", "optionValue": "&(a + 2)" }
+          ]
+        },
+        {
+          "qn": "In the worst case, the number of comparisons needed to search a singly linked list of length n for a given element is",
+          "options": [
+            { "id": "A", "optionValue": "log(2*n)" },
+            { "id": "B", "optionValue": "n/2" },
+            { "id": "C", "optionValue": "log(2*n) - 1" },
+            { "id": "D", "optionValue": "n" }
+          ]
+        },
+        {
+          "qn": "Which of the following gives the sum of the first n natural numbers?",
+          "options": [
+            { "id": "A", "optionValue": "nC2" },
+            { "id": "B", "optionValue": "(n-1)C2" },
+            { "id": "C", "optionValue": "(n+1)C2" },
+            { "id": "D", "optionValue": "(n+2)C2" }
+          ]
+        },
+        {
+          "qn": "What is the time complexity of the following iterative method used to find the sum of the first n natural numbers?",
+          "options": [
+            { "id": "A", "optionValue": "O(1)" },
+            { "id": "B", "optionValue": "O(n)" },
+            { "id": "C", "optionValue": "O(n^2)" },
+            { "id": "D", "optionValue": "O(n^3)" }
+          ]
+        },
+        {
+          "qn": "What will be the output of the following code snippet for<br/><pre>1->2->3->4->5</pre>?",
+          "options": [
+            { "id": "A", "optionValue": "1 2 3 4 5" },
+            { "id": "B", "optionValue": "5 4 3 2 1" },
+            { "id": "C", "optionValue": "1 3 5 2 4" },
+            { "id": "D", "optionValue": "2 4 1 3 5" }
+          ]
+        },
+        {
+          "qn": "What is the time complexity to insert an element to the front of a LinkedList (head pointer given)?",
+          "options": [
+            { "id": "A", "optionValue": "O(n)" },
+            { "id": "B", "optionValue": "O(1)" },
+            { "id": "C", "optionValue": "O(logn)" },
+            { "id": "D", "optionValue": "None of the above" }
+          ]
+        }
+      ]
+    ],
+    [
+        {"cat":"Python Programming"},
+        [   
+            {
+              "qn": "Which of the following code snippets correctly generates a list of squares of even numbers from 1 to 10?",
+              "options": [
+                { "id": "A", "optionValue": "squares = [x**2 for x in range(1, 11) if x % 2 == 0]" },
+                { "id": "B", "optionValue": "squares = [x**2 for x in range(1, 11) if x % 2 != 0]" },
+                { "id": "C", "optionValue": "squares = [x*2 for x in range(1, 11) if x % 2 == 0]" },
+                { "id": "D", "optionValue": "squares = [x**2 for x in range(2, 11, 2)]" }
+              ]
+            },
+            {
+              "qn": "What will be the output of the following code?<br/><br/>d = {'a': 1, 'b': 2, 'c': 3}<br/>print(d.get('d', 4))",
+              "options": [
+                { "id": "A", "optionValue": "None" },
+                { "id": "B", "optionValue": "KeyError: 'd'" },
+                { "id": "C", "optionValue": "4" },
+                { "id": "D", "optionValue": "{'d': 4}" }
+              ]
+            },
+            {
+              "qn": "Given the string s = 'Python Programming', which of the following expressions will return True?",
+              "options": [
+                { "id": "A", "optionValue": "s.islower()" },
+                { "id": "B", "optionValue": "s.startswith('Py')" },
+                { "id": "C", "optionValue": "s.endswith('programming')" },
+                { "id": "D", "optionValue": "s.isspace()" }
+              ]
+            },
+            {
+              "qn": "Which of the following code snippets correctly opens a file named example.txt for reading and writing, creating it if it doesn't exist?",
+              "options": [
+                { "id": "A", "optionValue": "file = open('example.txt', 'r')" },
+                { "id": "B", "optionValue": "file = open('example.txt', 'w')" },
+                { "id": "C", "optionValue": "file = open('example.txt', 'r+')" },
+                { "id": "D", "optionValue": "file = open('example.txt', 'w+')" }
+              ]
+            },
+            {
+              "qn": "What will be the output of the following code snippet?<br/><br/>try:<br/>    x = 10 / 0<br/>except ZeroDivisionError:<br/>    print('Division by zero error')<br/>except:<br/>    print('Some other error')<br/>else:<br/>    print('No error')<br/>finally:<br/>    print('Execution completed')",
+              "options": [
+                { "id": "A", "optionValue": "Division by zero error" },
+                { "id": "B", "optionValue": "Some other error" },
+                { "id": "C", "optionValue": "No error" },
+                { "id": "D", "optionValue": "Division by zero error followed by Execution completed" }
+              ]
+            }
+        ]
+    ],
+    [
+        {"cat": "English and Communication"},
+        [
+          {
+            "qn": "Which of the following sentences contains the correct question tag?",
+            "options": [
+              { "id": "A", "optionValue": "You are coming to the party, isn’t it?" },
+              { "id": "B", "optionValue": "She can’t swim, can she?" },
+              { "id": "C", "optionValue": "He will arrive soon, doesn’t he?" },
+              { "id": "D", "optionValue": "They didn’t finish the project, did they?" }
+            ]
+          },
+          {
+            "qn": "Which of the following words is a gerund?",
+            "options": [
+              { "id": "A", "optionValue": "Eating" },
+              { "id": "B", "optionValue": "Quickly" },
+              { "id": "C", "optionValue": "Beautifully" },
+              { "id": "D", "optionValue": "Around" }
+            ]
+          },
+          {
+            "qn": "Identify the sentence that correctly uses an infinitive?",
+            "options": [
+              { "id": "A", "optionValue": "She enjoys singing in the shower." },
+              { "id": "B", "optionValue": "He made a decision to study abroad." },
+              { "id": "C", "optionValue": "They avoided to make a mistake." },
+              { "id": "D", "optionValue": "We discussed to change the plan." }
+            ]
+          },
+          {
+            "qn": "Which of the following sentences correctly uses a participle phrase?",
+            "options": [
+              { "id": "A", "optionValue": "The dog barked loudly, chasing the cat." },
+              { "id": "B", "optionValue": "She is reading the book." },
+              { "id": "C", "optionValue": "He runs every morning." },
+              { "id": "D", "optionValue": "They discussed the plan." }
+            ]
+          },
+          {
+            "qn": "Which of the following is an example of a conditional clause?",
+            "options": [
+              { "id": "A", "optionValue": "If he had known, he would have acted differently." },
+              { "id": "B", "optionValue": "Although he was tired, he kept working." },
+              { "id": "C", "optionValue": "Because it was raining, the event was canceled." },
+              { "id": "D", "optionValue": "She sings beautifully." }
+            ]
+          }
+        ]
+    ]
+];
+
+const selections = [];
+const levelContainer = document.getElementById('level-container');
+const resultsContainer = document.getElementById('results');
+const resultsList = document.getElementById('results-list');
+var timerInterval = 0;
+let currentLevelIndex = 0;
+let currentQuestionIndex = 0;
+let timeLeft = 1; // Set initial timer value
+
+function startTest() {
+    $('#test-setup').addClass("hidden");
+    shuffleLevels();
+    generateSections();
+    startTimer();
+}
+
+function startTimer() {
+    clearInterval(timerInterval);
+    timeLeft = 1; // Reset timer to 15 seconds
+    $('#timer').text(`Time left: ${timeLeft}s`);
+    
+    timerInterval = setInterval(function() {
+        timeLeft--;
+        $('#timer').text(`Time left: ${timeLeft}s`);
+        
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            autoSelectNA();
+        }
+    }, 1000);
+}
+
+function stopTimer() {
+    $('#timer').addClass("hidden");
+}
+
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
+function shuffleLevels() {
+    levels.forEach(section => {
+        shuffle(section[1]); // Shuffle questions in each section
+    });
+    shuffle(levels); // Shuffle sections
+}
+
+function autoSelectNA() {
+    const question = levels[currentLevelIndex][1][currentQuestionIndex];
+    question.options.push({ id: "NA", optionValue: "N/A" });
+
+    $(`#table-${currentLevelIndex}-${currentQuestionIndex} tbody`).append(
+        `<tr><td>NA</td><td>N/A</td><td><input type="radio" name="selection-${currentLevelIndex}-${currentQuestionIndex}" value="NA" checked></td></tr>`
+    );
+
+    try {
+        // Increment question index and check if it's within bounds
+        if (currentQuestionIndex + 1 < levels[currentLevelIndex][1].length) {
+            nextQuestion(currentLevelIndex, currentQuestionIndex + 1);
+        } else if (currentLevelIndex + 1 < levels.length) {
+            // If the next question index is out of bounds but the next level is available
+            nextQuestion(currentLevelIndex + 1, 0);
+        }
+    } catch (error) {
+        console.error("Error occurred in callNQ:", error);
+    }
+}
+
+function generateSections() {
+    levels.forEach((section, sectionIndex) => {
+        const sectionDiv = $(`<div id="level-${sectionIndex}" class="level hidden"></div>`);
+        sectionDiv.append(`<h2>${section[0].cat}</h2>`);
+        sectionDiv.append(`<p id="sectionName"></p>`);
+
+        section[1].forEach((question, questionIndex) => {
+            const questionDiv = $(`<div id="question-${sectionIndex}-${questionIndex}" class="question hidden"></div>`);
+            questionDiv.append(`<h3>${question.qn}</h3>`);
+
+            const table = $(`<table id="table-${sectionIndex}-${questionIndex}" class="display">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Option</th>
+                                        <th>Select</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                             </table>`);
+            const tableBody = table.find('tbody');
+
+            question.options.forEach(option => {
+                const row = $('<tr></tr>');
+                row.append(`<td>${option.id}</td>`);
+                row.append(`<td>${option.optionValue}</td>`);
+                row.append(`<td><input type="radio" name="selection-${sectionIndex}-${questionIndex}" value="${option.id}" onclick="enableNext(${sectionIndex}, ${questionIndex})"></td>`);
+                tableBody.append(row);
+            });
+
+            questionDiv.append(table);
+            sectionDiv.append(questionDiv);
+
+            const button = $(`<button class="btn" id="btn-${sectionIndex}-${questionIndex}" onclick="nextQuestion(${sectionIndex}, ${questionIndex})" disabled>Next</button>`);
+            button.addClass('hidden'); // Initially hide all buttons
+            sectionDiv.append(button);
+        });
+
+        $('#level-container').append(sectionDiv);
+    });
+
+    // Unhide the first level and question to start with
+    $('#level-0').removeClass('hidden');
+    $('#question-0-0').removeClass('hidden');
+    $(`#btn-0-0`).removeClass('hidden'); // Show the first button
+}
+
+function enableNext(sectionIndex, questionIndex) {
+    $(`#btn-${sectionIndex}-${questionIndex}`).prop('disabled', false);
+}
+
+function nextQuestion(sectionIndex, questionIndex) {
+    // console.log(currentLevelIndex, currentQuestionIndex);
+    currentQuestionIndex = questionIndex;
+    currentLevelIndex = sectionIndex;
+    const selectedValue = $(`input[name="selection-${sectionIndex}-${questionIndex}"]:checked`).val();
+    selections.push({ sectionIndex, questionIndex, selectedValue });
+
+    // Hide current question and button
+    $(`#question-${sectionIndex}-${questionIndex}`).addClass('hidden');
+    $(`#btn-${sectionIndex}-${questionIndex}`).addClass('hidden');
+
+    // Check for next question or level
+    const nextQuestionIndex = questionIndex + 1;
+    if (nextQuestionIndex < levels[sectionIndex][1].length) {
+        // console.log(sectionIndex, nextQuestionIndex, sectionIndex==0 && nextQuestionIndex==2);
+        $(`#question-${sectionIndex}-${nextQuestionIndex}`).removeClass('hidden');
+        $(`#btn-${sectionIndex}-${nextQuestionIndex}`).removeClass('hidden');
+        if(sectionIndex==0 && nextQuestionIndex==2){
+            $(`#question-0-0`).addClass('hidden');
+            $(`#btn-0-0`).addClass('hidden');
+        }
+        startTimer();
+    } else if (sectionIndex + 1 < levels.length) {
+        $(`#level-${sectionIndex}`).addClass('hidden');
+        $(`#level-${sectionIndex + 1}`).removeClass('hidden');
+        $(`#question-${sectionIndex + 1}-0`).removeClass('hidden');
+        $(`#btn-${sectionIndex + 1}-0`).removeClass('hidden');
+        startTimer();
+    } else {
+        showResults();
+        stopTimer();
+    }
+}
+
+function showResults() {
+    $('#level-container').addClass('hidden');
+    $('#results').removeClass('hidden');
+
+    let resultsData = [];
+
+    selections.forEach(selection => {
+        const question = levels[selection.sectionIndex][1][selection.questionIndex];
+        const selectedOption = question.options.find(option => option.id === selection.selectedValue);
+        const resultText = `Level ${selection.sectionIndex + 1}, Question ${selection.questionIndex + 1}: ${selectedOption ? selectedOption.optionValue : 'N/A'}`;
+        $('#results-list').append(`<li>${resultText}</li>`);
+        
+        // Collect data to send to the server
+        resultsData.push({
+            level: selection.sectionIndex + 1,
+            question: selection.questionIndex + 1,
+            selectedOption: selectedOption ? selectedOption.optionValue : 'N/A'
+        });
+    });
+
+    // POST the results to the server
+    $.ajax({
+        url: 'https://capture.cseatheeye.com/',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            player: localStorage.getItem('roll'), 
+            levels: levels,
+            results: resultsData}),
+        success: function(response) {
+            console.log('Results successfully sent to the server:', response);
+        },
+        error: function(error) {
+            console.error('Error sending results to the server:', error);
+        }
+    });
+}
+
+
+</script>
+
+<script>
+
+    // Disable right-click
+document.addEventListener('contextmenu', function (e) {
+    e.preventDefault();
+}, false);
+
+// Disable key shortcuts
+document.addEventListener('keydown', function (e) {
+    // List of forbidden key combinations
+    const forbiddenKeys = ['F12', 'I', 'J', 'K', 'U', 'S'];
+
+    // Check for Ctrl + Shift + Key, Ctrl + Key, F11, Esc
+    if (
+        (e.ctrlKey && forbiddenKeys.includes(e.key.toUpperCase())) ||
+        (e.ctrlKey && e.shiftKey && forbiddenKeys.includes(e.key.toUpperCase())) ||
+        e.key === 'F11' ||
+        e.key === 'Escape'
+    ) {
+        e.preventDefault();
+        breachDetected();
+    }
+}, false);
+
+// Listen for full-screen changes and enforce it
+document.addEventListener('fullscreenchange', function () {
+    if (!document.fullscreenElement) {
+        breachDetected();
+    }
+}, false);
+
+document.addEventListener('webkitfullscreenchange', function () {
+    if (!document.webkitIsFullScreen) {
+        breachDetected();
+    }
+}, false);
+
+document.addEventListener('mozfullscreenchange', function () {
+    if (!document.mozFullScreen) {
+        breachDetected();
+    }
+}, false);
+
+document.addEventListener('msfullscreenchange', function () {
+    if (!document.msFullscreenElement) {
+        breachDetected();
+    }
+}, false);
+
+function breachDetected() {
+    alert("Breach of Testing Terms Detected! Closing the tab...");
+}
+
+</script>
+
+<script>
+    // Function to enter full-screen mode
+    function enterFullScreen() {
+        if (document.documentElement.requestFullscreen) {
+            document.documentElement.requestFullscreen();
+        } else if (document.documentElement.mozRequestFullScreen) { // Firefox
+            document.documentElement.mozRequestFullScreen();
+        } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari and Opera
+            document.documentElement.webkitRequestFullscreen();
+        } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
+            document.documentElement.msRequestFullscreen();
+        }
+    }
+
+    // Prompt full-screen mode on button click
+    document.getElementById('enter-fullscreen').addEventListener('click', function() {
+        enterFullScreen();
+    });
+
+    // Monitor full-screen state and enforce it
+    function enforceFullScreen() {
+        if (!document.fullscreenElement && !document.mozFullScreenElement &&
+            !document.webkitFullscreenElement && !document.msFullscreenElement) {
+            alert("You must be in full-screen mode to continue the test.");
+        }
+    }
+
+    document.addEventListener('fullscreenchange', enforceFullScreen);
+    document.addEventListener('mozfullscreenchange', enforceFullScreen);
+    document.addEventListener('webkitfullscreenchange', enforceFullScreen);
+    document.addEventListener('msfullscreenchange', enforceFullScreen);
+
+    // Optionally, prevent exiting full-screen with keypresses (F11, Escape)
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'F11' || e.key === 'Escape') {
+            e.preventDefault();
+            enterFullScreen();
+        }
+    });
+</script>
+
+</body>
+</html>

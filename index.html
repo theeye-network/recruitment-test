@@ -112,14 +112,16 @@
         <h1>Recruitment Test for The Eye, CSEA.</h1>
         <hr/>
         <h3>Instructions</h3>
+        <p style="text-align:left">
         - This test consists of 4 section with 5 MCQ Questions per section.<br/>
         - You will be provided 20 seconds per question.<br/>
         - You will be tested on your knowledge in 1.English and Communication, 2.OOPS Concepts, 3.Python Programming, 4.Data Structures.<br/>
-        - This test must be taken between 10:00AM IST and 7:00PM IST on September 1, 2024.<br/>
+        - This test must be taken between 10:00AM IST and 9:00PM IST on September 1, 2024.<br/>
         - You can only attempt the test once. There is no pass mark, we will shortlist the top performers.<br/>
         - No Tab Switching is Allowed.<br/>
         - Test must be taken in full-screen mode only.<br/>
         - Your on-screen actions are monitored by our automated systems. Kindly do not attempt to copy.<br/>
+        </p>
         <hr/>
         <br/>
         <h1>Enter your Details</h1>
@@ -153,10 +155,10 @@
             .then(data => {
                 const currentDateTime = new Date(data.datetime);
                 const startTestTime1 = new Date('2024-09-01T10:00:00+05:30');
-                const endTestTime1 = new Date('2024-09-01T19:00:00+05:30');
+                const endTestTime1 = new Date('2024-09-01T21:00:00+05:30');
                 
-                const startTestTime2 = new Date('2024-08-31T16:00:00+05:30');
-                const endTestTime2 = new Date('2024-09-01T08:00:00+05:30');
+                const startTestTime2 = new Date('2024-08-31T17:00:00+05:30');
+                const endTestTime2 = new Date('2024-08-31T20:00:00+05:30');
                 
                 if (!(
                         (currentDateTime >= startTestTime1 && currentDateTime <= endTestTime1) || 
@@ -239,7 +241,7 @@ const levels = [
           "options": [
             { "id": "A", "optionValue": "*a + 2" },
             { "id": "B", "optionValue": "*(a + 2)" },
-            { "id": "C", "optionValue": "*(a + 2)" },
+            { "id": "C", "optionValue": "*(a - 2)" },
             { "id": "D", "optionValue": "&(a + 2)" }
           ]
         },
@@ -271,7 +273,7 @@ const levels = [
           ]
         },
         {
-          "qn": "What will be the output of the following code snippet for<br/><pre>1->2->3->4->5</pre>?",
+          "qn": "What will be the output of the following code snippet for<br/><p style='text-align:left;>struct Node *head = NULL, *temp;<br/>for (int i = 5; i > 0; i--) head = (temp = malloc(sizeof(struct Node))), temp->data = i, temp->next = head;<br/>for (temp = head->next; temp; temp = temp->next) printf('%d ', temp->data);<br/>return 0;</p>?",
           "options": [
             { "id": "A", "optionValue": "1 2 3 4 5" },
             { "id": "B", "optionValue": "5 4 3 2 1" },
@@ -324,13 +326,13 @@ const levels = [
               "qn": "Which of the following code snippets correctly opens a file named example.txt for reading and writing, creating it if it doesn't exist?",
               "options": [
                 { "id": "A", "optionValue": "file = open('example.txt', 'r')" },
-                { "id": "B", "optionValue": "file = open('example.txt', 'w')" },
-                { "id": "C", "optionValue": "file = open('example.txt', 'r+')" },
-                { "id": "D", "optionValue": "file = open('example.txt', 'w+')" }
+                { "id": "B", "optionValue": "file = open('example.txt', 'r+')" },
+                { "id": "C", "optionValue": "file = open('example.txt', 'a+')" },
+                { "id": "D", "optionValue": "file = open('example.txt', 'z+')" }
               ]
             },
             {
-              "qn": "What will be the output of the following code snippet?<br/><br/>try:<br/>    x = 10 / 0<br/>except ZeroDivisionError:<br/>    print('Division by zero error')<br/>except:<br/>    print('Some other error')<br/>else:<br/>    print('No error')<br/>finally:<br/>    print('Execution completed')",
+              "qn": "What will be the output of the following code snippet?<br/><br/><p style='text-align:left;>try:<br/>    x = 10 / 0<br/>except ZeroDivisionError:<br/>    print('Division by zero error')<br/>except:<br/>    print('Some other error')<br/>else:<br/>    print('No error')<br/>finally:<br/>    print('Execution completed')</p>",
               "options": [
                 { "id": "A", "optionValue": "Division by zero error" },
                 { "id": "B", "optionValue": "Some other error" },

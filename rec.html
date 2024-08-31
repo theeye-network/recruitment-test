@@ -349,7 +349,7 @@ const selections = [];
 const levelContainer = document.getElementById('level-container');
 const resultsContainer = document.getElementById('results');
 const resultsList = document.getElementById('results-list');
-var timerInterval = 20;
+var timerInterval = 0;
 let currentLevelIndex = 0;
 let currentQuestionIndex = 0;
 let timeLeft = 1; // Set initial timer value
@@ -363,7 +363,7 @@ function startTest() {
 
 function startTimer() {
     clearInterval(timerInterval);
-    timeLeft = 1; // Reset timer to 15 seconds
+    timeLeft = 20; // Reset timer to 15 seconds
     $('#timer').text(`Time left: ${timeLeft}s`);
     
     timerInterval = setInterval(function() {
